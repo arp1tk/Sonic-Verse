@@ -252,6 +252,7 @@ export default function TimeTravel() {
                       name={track.name}
                       artist={track.artist}
                       album={track.album}
+                      image={track.image}
                       onPlay={() => playTrack(track.id)}
                     />
                   ))}

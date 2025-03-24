@@ -11,6 +11,7 @@ interface Track {
   name: string;
   artists: { name: string }[];
   album: { name: string; release_date: string };
+  image: string;
 }
 
 interface TopArtistsResponse {
@@ -194,6 +195,7 @@ export async function GET(request: Request) {
       name: track.name,
       artist: track.artists[0].name,
       album: track.album.name,
+      image: track.album.images[0]?.url || null
     }));
 
     return new Response(JSON.stringify({ tracks: playlist }), {

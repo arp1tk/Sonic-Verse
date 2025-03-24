@@ -140,7 +140,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-400 mb-4">
-                  Find your musical twin from celebrities, characters, or legends who vibe like you.
+                  Find your musical twin from celebs, characters, legends who vibe like you.
                 </p>
                 <Button asChild className="w-full bg-purple-600 hover:bg-purple-500 text-white">
                   <Link href="/doppelganger">Find Your Twin</Link>
