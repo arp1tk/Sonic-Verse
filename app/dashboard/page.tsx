@@ -132,7 +132,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <Card className="bg-white/5 backdrop-blur-sm border-purple-900/50 hover:border-purple-500/50 transition-all">
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center text-lg">
+                <CardTitle className="flex items-center  text-lg">
                   <User2 className="w-5 h-5 mr-2 text-purple-400" />
                   Doppelgänger Finder
                 </CardTitle>
@@ -197,7 +197,7 @@ export default function Dashboard() {
                   Deep dive into your music preferences with detailed analytics and insights.
                 </p>
                 <Button asChild className="w-full bg-blue-600 hover:bg-blue-500 text-white">
-                  <Link href="/analysis">Analyze My Music</Link>
+                  <Link href="/listening-timeline">Analyze My Music</Link>
                 </Button>
               </CardContent>
             </Card>

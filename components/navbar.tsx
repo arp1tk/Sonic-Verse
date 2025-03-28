@@ -1,51 +1,50 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { Music, Clock, User2, LayoutDashboard, Menu, X, LogOut, Mic2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Music, Clock, User2, LayoutDashboard, Menu, X, LogOut, Mic2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 interface NavbarProps {
-  accessToken?: string
+  accessToken?: string;
   userProfile?: {
-    display_name?: string
-    images?: { url: string }[]
-  } | null
+    display_name?: string;
+    images?: { url: string }[];
+  } | null;
 }
 
 export default function Navbar({ accessToken, userProfile }: NavbarProps) {
-  const pathname = usePathname()
-  const router = useRouter()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname();
+  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { name: "Dashboard", href: "/dashboard", icon: <LayoutDashboard className="w-5 h-5 mr-2" /> },
     { name: "Top Artists", href: "/top-artists", icon: <Mic2 className="w-5 h-5 mr-2" /> },
     { name: "Time Travel", href: "/time-travel", icon: <Clock className="w-5 h-5 mr-2" /> },
     { name: "Doppelgänger", href: "/doppelganger", icon: <User2 className="w-5 h-5 mr-2" /> },
-  ]
+  ];
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-  const closeMenu = () => setIsMenuOpen(false)
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
-  // Close menu when route changes
   useEffect(() => {
-    closeMenu()
-  }, [pathname])
+    closeMenu();
+  }, [pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("spotify_access_token")
-    router.push("/")
-  }
+    localStorage.removeItem("spotify_access_token");
+    router.push("/");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
@@ -111,7 +110,12 @@ export default function Navbar({ accessToken, userProfile }: NavbarProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button variant="outline" size="sm" asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="text-green-500 border-green-500 hover:bg-green-500/20 hover:text-green-400"
+              >
                 <Link href="/api/login">Login with Spotify</Link>
               </Button>
             )}
@@ -145,7 +149,7 @@ export default function Navbar({ accessToken, userProfile }: NavbarProps) {
               </Link>
             ))}
           </div>
-          {accessToken && userProfile && (
+          {accessToken && userProfile ? (
             <div className="pt-4 pb-3 border-t border-white/10">
               <div className="flex items-center px-5">
                 <div className="flex-shrink-0">
@@ -171,10 +175,20 @@ export default function Navbar({ accessToken, userProfile }: NavbarProps) {
                 </Button>
               </div>
             </div>
+          ) : (
+            <div className="px-2 pb-3">
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="w-full text-green-500 border-green-500 hover:bg-green-500/20 hover:text-green-400"
+              >
+                <Link href="/api/login">Login with Spotify</Link>
+              </Button>
+            </div>
           )}
         </div>
       )}
     </nav>
-  )
+  );
 }
-

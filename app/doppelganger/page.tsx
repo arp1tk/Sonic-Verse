@@ -57,7 +57,7 @@ export default function DoppelgangerFinder() {
       const response = await axios.get(`/api/doppelganger`, {
         params: { access_token: accessToken },
       })
-      console.log(response)
+      console.log("Full API response:", response.data); 
       setDoppelganger(response.data)
 
     } catch (error: any) {
@@ -122,10 +122,12 @@ export default function DoppelgangerFinder() {
 
   const renderDoppelgangerCard = () => {
     if (!doppelganger) return null;
-
-    const source = extractSourceFromName(doppelganger.name)
-    const cleanName = doppelganger.name.replace(/'([^']+)'|"([^"]+)"|\(([^)]+)\)/g, '').trim()
-
+  
+    // Extract name and source more reliably
+    const nameParts = doppelganger.name.split('(');
+    const characterName = nameParts[0].trim();
+    const source = nameParts[1] ? nameParts[1].replace(')', '').replace('from ', '').trim() : 'Popular Culture';
+  
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -154,92 +156,94 @@ export default function DoppelgangerFinder() {
               <div className="text-center space-y-2">
                 <h3 className="text-3xl font-bold text-purple-200 flex items-center justify-center">
                   <Music className="w-8 h-8 mr-3 text-purple-400" />
-                  {cleanName}
+                  {characterName}
                 </h3>
                 <div className="text-gray-400 italic">
                   From {source}
                 </div>
               </div>
-
-              {/* Character Description */}
+  
+              {/* Full Description with proper formatting */}
               <div className="space-y-2">
                 <h4 className="text-purple-400 font-semibold">Character Description</h4>
                 <div className="bg-purple-900/20 p-4 rounded-lg border border-purple-500/30">
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 whitespace-pre-wrap">
                     {doppelganger.description}
                   </p>
                 </div>
               </div>
-
-              {/* Stats Grid */}
+  
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Musical DNA */}
+                {/* Left Column */}
                 <div className="space-y-4">
-                  <h4 className="text-purple-400 font-semibold">Musical DNA</h4>
-                  <div className="space-y-4">
+                  <div>
+                    <h4 className="text-purple-400 font-semibold mb-2">Genre Fusion</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {Array.isArray(doppelganger.genres) ? (
+                        doppelganger.genres.map((genre, index) => (
+                          <Badge 
+                            key={index} 
+                            className="bg-purple-900/50 text-purple-300 border-purple-500/30"
+                          >
+                            {genre}
+                          </Badge>
+                        ))
+                      ) : (
+                        <Badge className="bg-purple-900/50 text-purple-300 border-purple-500/30">
+                          {doppelganger.genres}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-purple-400 font-semibold mb-2">Audio Features</h4>
+                    <div className="flex gap-4">
+                      <div className="bg-purple-900/30 p-3 rounded-lg flex-1">
+                        <p className="text-gray-200 text-sm">Danceability</p>
+                        <p className="text-2xl font-bold text-purple-300">
+                          {(doppelganger.audioFeatures.danceability * 100).toFixed(0)}%
+                        </p>
+                      </div>
+                      <div className="bg-purple-900/30 p-3 rounded-lg flex-1">
+                        <p className="text-gray-200 text-sm">Energy</p>
+                        <p className="text-2xl font-bold text-purple-300">
+                          {(doppelganger.audioFeatures.energy * 100).toFixed(0)}%
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                {/* Right Column */}
+                <div className="space-y-4">
+                  {/* Cultural Reference */}
+                  {doppelganger.culturalReference && (
                     <div>
-                      <p className="text-gray-300 font-medium mb-1">Genre Fusion</p>
+                      <h4 className="text-purple-400 font-semibold mb-2">Cultural Reference</h4>
+                      <div className="bg-purple-900/20 p-4 rounded-lg border border-purple-500/30">
+                        <p className="text-gray-300 italic">
+                          {doppelganger.culturalReference.replace(/^"+|"+$/g, '')}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+  
+                  {/* Matching Genres */}
+                  {doppelganger.matchingGenres && doppelganger.matchingGenres.length > 0 && (
+                    <div>
+                      <h4 className="text-purple-400 font-semibold mb-2">Suggested Genres</h4>
                       <div className="flex flex-wrap gap-2">
-                        {doppelganger.genres.map((genre, index) => (
-                          <Badge key={index} variant="outline" className="bg-purple-900/50 text-purple-300 border-purple-500/30">
+                        {doppelganger.matchingGenres.map((genre, index) => (
+                          <Badge 
+                            key={index} 
+                            className="bg-purple-900/50 text-purple-300 border-purple-500/30"
+                          >
                             {genre}
                           </Badge>
                         ))}
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <p className="text-gray-300 font-medium">Audio Features</p>
-                      <div className="flex items-center space-x-4">
-                        <div className="bg-purple-900/30 p-3 rounded-lg">
-                          <p className="text-gray-200 text-sm">Danceability</p>
-                          <p className="text-2xl font-bold text-purple-300">
-                            {(doppelganger.audioFeatures.danceability * 100).toFixed(0)}%
-                          </p>
-                        </div>
-                        <div className="bg-purple-900/30 p-3 rounded-lg">
-                          <p className="text-gray-200 text-sm">Energy</p>
-                          <p className="text-2xl font-bold text-purple-300">
-                            {(doppelganger.audioFeatures.energy * 100).toFixed(0)}%
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Analysis Section */}
-                <div className="space-y-4">
-                {/* Cultural Reference - Fixed display */}
-                {doppelganger.culturalReference && (
-                  <div className="space-y-2">
-                    <h4 className="text-purple-400 font-semibold">Cultural Reference</h4>
-                    <div className="bg-purple-900/20 p-4 rounded-lg border border-purple-500/30">
-                      <p className="text-gray-300">
-                        {doppelganger.culturalReference.startsWith('"') && 
-                         doppelganger.culturalReference.endsWith('"') ?
-                         doppelganger.culturalReference :
-                         `"${doppelganger.culturalReference}"`}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Suggested Genres - Fixed display */}
-                {doppelganger.matchingGenres && doppelganger.matchingGenres.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="text-purple-400 font-semibold">Suggested Genres</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {doppelganger.matchingGenres.map((genre, index) => (
-                        <Badge 
-                          key={index} 
-                          variant="outline" 
-                          className="bg-purple-900/50 text-purple-300 border-purple-500/30"
-                        >
-                          {genre}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
                   )}
                 </div>
               </div>
@@ -248,7 +252,7 @@ export default function DoppelgangerFinder() {
         </Card>
       </motion.div>
     );
-  }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
