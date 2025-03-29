@@ -1,5 +1,5 @@
 "use client";
-
+import { Suspense } from 'react';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
@@ -470,5 +470,12 @@ export default function ListeningTimeline() {
         </div>
       </main>
     </div>
+  );
+}
+export function ListeningTimelinePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ListeningTimeline/>
+    </Suspense>
   );
 }

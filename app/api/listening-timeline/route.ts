@@ -4,12 +4,13 @@ import { NextResponse } from 'next/server';
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const accessToken = searchParams.get('access_token');
-
-  if (!accessToken) {
-    return NextResponse.json({ error: 'Missing access_token' }, { status: 400 });
+  // Get the access token from the Authorization header instead
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader) {
+    return NextResponse.json({ error: 'Missing Authorization header' }, { status: 400 });
   }
+
+  const accessToken = authHeader.replace('Bearer ', '');
 
   try {
     const response = await axios.get(`${SPOTIFY_API_BASE}/me/player/recently-played`, {
@@ -21,9 +22,9 @@ export async function GET(request: Request) {
       playedAt: item.played_at,
       trackName: item.track.name,
       artist: item.track.artists[0].name,
-      energy: item.track.energy || 0.5, // Fallback
+      energy: item.track.energy || 0.5,
       durationMs: item.track.duration_ms,
-      albumArt: item.track.album.images[0]?.url || '', // Add album art
+      albumArt: item.track.album.images[0]?.url || '',
     }));
 
     // Process into hourly buckets
@@ -39,7 +40,6 @@ export async function GET(request: Request) {
         return playedAt >= startTime && playedAt < endTime;
       });
 
-      // Find the most-played track (by play count or just the first one)
       const topTrack = tracksInHour[0] || null;
 
       return {
@@ -55,7 +55,6 @@ export async function GET(request: Request) {
       };
     });
 
-    console.log("Timeline data:", timelineData);
     return NextResponse.json({ timeline: timelineData });
   } catch (error: any) {
     console.error('Listening Timeline Error:', error);
