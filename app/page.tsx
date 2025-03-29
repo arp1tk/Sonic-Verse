@@ -1,36 +1,45 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { ToastContainer } from "react-toastify"
-
-<ToastContainer
-  position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  rtl={false}
-  pauseOnFocusLoss
-  draggable
-  pauseOnHover
-  theme="dark"
-/>
-
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import { Waves, UserSearch, Disc, BarChart2, Clock } from "lucide-react";
 export default function Home() {
+  const router = useRouter();
+
   const login = () => {
-    window.location.href = "/api/login"
-  }
+    window.location.href = "/api/login";
+  };
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const token = urlParams.get("access_token")
-    if (token) {
-      window.location.href = "/dashboard?access_token=" + token
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get("access_token");
+    const expiresAt = urlParams.get("expires_at");
+    const refreshToken = urlParams.get("refresh_token");
+
+    if (accessToken && expiresAt && refreshToken) {
+      localStorage.setItem("spotify_access_token", accessToken);
+      localStorage.setItem("spotify_expires_at", expiresAt);
+      localStorage.setItem("spotify_refresh_token", refreshToken);
+      router.push("/dashboard");
     }
-  }, [])
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black to-blue-900/30"></div>
@@ -41,19 +50,17 @@ export default function Home() {
       {/* Content */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-6">
         <div className="max-w-md w-full">
-          {/* Logo */}
+          {/* Logo with Sound Wave */}
           <div className="mb-10 text-center">
             <div className="inline-flex items-center justify-center mb-4">
               <div className="relative w-16 h-16 mr-2">
-                <div className="absolute inset-0 rounded-full bg-green-500 blur-md opacity-70 animate-pulse"></div>
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" className="w-10 h-10 text-white" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.65 14.65c-.2.2-.51.2-.71 0-1.79-1.78-4.64-2.16-7.44-1.18-.21.07-.43-.09-.5-.29-.07-.21.09-.43.29-.5 3.16-1.09 6.39-.66 8.43 1.35.2.19.2.51.01.71l-.08-.09zm1.23-2.75c-.25.25-.65.25-.9 0-2.17-2.17-5.46-2.8-8.02-1.53-.26.12-.58.01-.7-.24-.12-.26-.01-.58.24-.7 2.93-1.39 6.63-.67 9.13 1.82.25.25.25.65 0 .9l.25-.25zm.11-2.77c-.26.26-.68.26-.94 0-2.54-2.54-6.35-3.12-9.48-1.71-.3.13-.64-.01-.77-.3-.13-.3.01-.64.3-.77 3.49-1.58 7.76-.9 10.65 1.96.26.26.26.68 0 .94l.24-.12z" />
-                  </svg>
+              <div className="relative w-full h-full flex items-center justify-center">
+                  <Waves className="w-10 h-10 text-green-500" strokeWidth={2} />
                 </div>
+
               </div>
               <h1 className="text-4xl font-bold tracking-tighter">
-                Sonic<span className="text-green-500">Verse</span>
+                Spectra
               </h1>
             </div>
             <p className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 font-medium">
@@ -71,7 +78,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Feature Cards */}
+          {/* Feature Cards - Updated with Doppelgänger */}
           <div className="grid grid-cols-2 gap-4 mb-10">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
               <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mb-3">
@@ -116,16 +123,13 @@ export default function Home() {
                   stroke="currentColor"
                   strokeWidth="2"
                 >
-                  <path d="M2 12h5"></path>
-                  <path d="M9 12h5"></path>
-                  <path d="M16 12h6"></path>
-                  <path d="M4 7v10"></path>
-                  <path d="M11 7v10"></path>
-                  <path d="M18 7v10"></path>
+                  <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <path d="M20 8v6M23 11h-6"></path>
                 </svg>
               </div>
-              <h3 className="font-medium mb-1">Taste Analysis</h3>
-              <p className="text-xs text-gray-400">Analyze your music preferences</p>
+              <h3 className="font-medium mb-1">Doppelgänger</h3>
+              <p className="text-xs text-gray-400">Find your music twin</p>
             </div>
 
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
@@ -174,6 +178,5 @@ export default function Home() {
         <p>Not affiliated with Spotify. Made for music lovers.</p>
       </footer>
     </div>
-  )
+  );
 }
-

@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useSearchParams, useRouter } from "next/navigation"
-import { Mic2, Music, TrendingUp, Award, Disc } from 'lucide-react'
+import { Mic2, Music, TrendingUp, Award, Disc, Clock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 import Navbar from "@/components/navbar"
+import { Button } from "@/components/ui/button"
 import { 
   BarChart,
   Bar,
@@ -34,6 +35,11 @@ interface Artist {
   images: { url: string }[]
 }
 
+interface TimeSpentData {
+  artist: string
+  time: number
+}
+
 export default function TopArtists() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -44,25 +50,24 @@ export default function TopArtists() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string>("")
   const [activeTab, setActiveTab] = useState<string>("grid")
-
+  const [timeSpentData, setTimeSpentData] = useState<TimeSpentData[]>([])
+  
+  const [timeSpentLoading, setTimeSpentLoading] = useState(false)
   const timeRanges = [
     { value: "short_term", label: "Last 4 Weeks" },
     { value: "medium_term", label: "Last 6 Months" },
     { value: "long_term", label: "All Time" },
   ]
 
-  const COLORS = ['#1DB954', '#1ED760', '#2EBD59', '#57B660', '#7C25F8', '#A020F0', '#663399', '#9370DB', '#4B0082'];
+  const COLORS = ['#1DB954', '#1ED760', '#2EBD59', '#57B660', '#7C25F8', '#A020F0', '#663399', '#9370DB', '#4B0082']
 
   useEffect(() => {
-    // Check URL for new token from callback
     const tokenFromUrl = searchParams.get("access_token")
     if (tokenFromUrl) {
       localStorage.setItem("spotify_access_token", tokenFromUrl)
       setAccessToken(tokenFromUrl)
-      // Clear URL params by redirecting to clean path
       router.replace("/top-artists")
     } else {
-      // Fallback to stored token
       const storedToken = localStorage.getItem("spotify_access_token")
       if (storedToken) {
         setAccessToken(storedToken)
@@ -75,6 +80,9 @@ export default function TopArtists() {
   useEffect(() => {
     if (accessToken) {
       fetchUserProfile()
+     
+
+
     }
   }, [accessToken])
 
@@ -97,7 +105,34 @@ export default function TopArtists() {
       console.error("Error fetching user profile:", error)
     }
   }
-
+  // const fetchTimeSpentData = async () => {
+  //   if (!accessToken) return
+    
+  //   setTimeSpentLoading(true)
+  //   try {
+  //     const response = await axios.get(
+  //       `/api/time-spent?access_token=${accessToken}&time_range=${timeRange}`
+  //     )
+      
+  //     setTimeSpentData(response.data)
+  //   } catch (error) {
+  //     console.error("Error fetching time spent data:", error)
+  //     setError("Failed to load time spent data")
+  //   } finally {
+  //     setTimeSpentLoading(false)
+  //   }
+  // }
+  
+  // // Update your useEffect
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     fetchUserProfile()
+  //     fetchTopArtists()
+  //     if (activeTab === 'time') {
+  //       fetchTimeSpentData()
+  //     }
+  //   }
+  // }, [accessToken, timeRange, activeTab])
   const fetchTopArtists = async () => {
     if (!accessToken) return
     setLoading(true)
@@ -113,6 +148,8 @@ export default function TopArtists() {
     }
   }
 
+ 
+
   // Prepare data for charts
   const popularityChartData = topArtists
     .slice(0, 10)
@@ -120,20 +157,20 @@ export default function TopArtists() {
       name: artist.name,
       popularity: artist.popularity
     }))
-    .sort((a, b) => b.popularity - a.popularity);
+    .sort((a, b) => b.popularity - a.popularity)
 
   // Aggregate genres for pie chart
-  const genreCounts: Record<string, number> = {};
+  const genreCounts: Record<string, number> = {}
   topArtists.forEach(artist => {
     artist.genres.forEach(genre => {
-      genreCounts[genre] = (genreCounts[genre] || 0) + 1;
-    });
-  });
+      genreCounts[genre] = (genreCounts[genre] || 0) + 1
+    })
+  })
 
   const genreChartData = Object.entries(genreCounts)
     .map(([name, value]) => ({ name, value }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 8);
+    .slice(0, 8)
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -142,10 +179,10 @@ export default function TopArtists() {
           <p className="font-bold">{label}</p>
           <p>Popularity: {payload[0].value}</p>
         </div>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   const GenreTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -154,10 +191,10 @@ export default function TopArtists() {
           <p className="font-bold">{payload[0].name}</p>
           <p>Count: {payload[0].value}</p>
         </div>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   if (!accessToken) {
     return (
@@ -201,9 +238,15 @@ export default function TopArtists() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={timeRange} onValueChange={setTimeRange} className="w-full">
-                <TabsList className="grid grid-cols-3 mb-4">
+                <TabsList className="grid grid-cols-3 mb-4 gap-2 bg-black/30">
                   {timeRanges.map((range) => (
-                    <TabsTrigger key={range.value} value={range.value}>
+                    <TabsTrigger 
+                      key={range.value} 
+                      value={range.value}
+                      className="data-[state=active]:bg-amber-500/80 data-[state=active]:text-white
+                               data-[state=active]:border-amber-400 border border-transparent
+                               hover:bg-white/10 transition-colors"
+                    >
                       {range.label}
                     </TabsTrigger>
                   ))}
@@ -216,19 +259,43 @@ export default function TopArtists() {
           <Card className="bg-black/40 backdrop-blur-sm border-white/10 mb-8">
             <CardContent className="pt-6">
               <Tabs defaultValue="grid" onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid grid-cols-3">
-                  <TabsTrigger value="grid">
+                <TabsList className="grid grid-cols-4 gap-2 bg-black/30">
+                  <TabsTrigger 
+                    value="grid"
+                    className="data-[state=active]:bg-amber-500/80 data-[state=active]:text-white
+                             data-[state=active]:border-amber-400 border border-transparent
+                             hover:bg-white/10 transition-colors"
+                  >
                     <Disc className="w-4 h-4 mr-2" />
                     Grid View
                   </TabsTrigger>
-                  <TabsTrigger value="popularity">
+                  <TabsTrigger 
+                    value="popularity"
+                    className="data-[state=active]:bg-amber-500/80 data-[state=active]:text-white
+                             data-[state=active]:border-amber-400 border border-transparent
+                             hover:bg-white/10 transition-colors"
+                  >
                     <TrendingUp className="w-4 h-4 mr-2" />
                     Popularity
                   </TabsTrigger>
-                  <TabsTrigger value="genres">
+                  <TabsTrigger 
+                    value="genres"
+                    className="data-[state=active]:bg-amber-500/80 data-[state=active]:text-white
+                             data-[state=active]:border-amber-400 border border-transparent
+                             hover:bg-white/10 transition-colors"
+                  >
                     <Music className="w-4 h-4 mr-2" />
                     Genres
                   </TabsTrigger>
+                  {/* <TabsTrigger 
+                    value="time"
+                    className="data-[state=active]:bg-amber-500/80 data-[state=active]:text-white
+                             data-[state=active]:border-amber-400 border border-transparent
+                             hover:bg-white/10 transition-colors"
+                  >
+                    <Clock className="w-4 h-4 mr-2" />
+                    Time Spent
+                  </TabsTrigger> */}
                 </TabsList>
               </Tabs>
             </CardContent>
@@ -253,6 +320,7 @@ export default function TopArtists() {
           ) : (
             <>
               {/* Grid View */}
+              
               {activeTab === "grid" && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                   {topArtists.map((artist, index) => (
@@ -387,6 +455,81 @@ export default function TopArtists() {
                 </Card>
               )}
 
+              {/* Time Spent View */}
+              {/* {activeTab === "time" && (
+  <Card className="bg-black/40 backdrop-blur-sm border-white/10 p-6">
+    <CardHeader>
+      <CardTitle className="text-2xl">
+        Estimated Listening Time ({timeRanges.find(r => r.value === timeRange)?.label})
+      </CardTitle>
+      <CardDescription>
+        Based on your top tracks from this period (weighted by popularity)
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      {timeSpentLoading ? (
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center">
+              <Skeleton className="w-10 h-10 rounded-full mr-4" />
+              <div className="flex-1">
+                <Skeleton className="h-4 w-32 mb-2" />
+                <Skeleton className="h-2 w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : timeSpentData.length > 0 ? (
+        <div className="space-y-4">
+          {timeSpentData.map((item, index) => (
+            <div key={`${item.artist}-${index}`} className="flex items-center">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden mr-4">
+                <img
+                  src={item.image}
+                  alt={item.artist}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.src = '/default-artist.png'
+                  }}
+                />
+              </div>
+              <div className="flex-1">
+                <div className="flex justify-between mb-1">
+                  <span className="font-medium">{item.artist}</span>
+                  <span className="text-green-400">
+                    {item.time} {item.time === 1 ? 'min' : 'mins'}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-2">
+                  <div 
+                    className="bg-green-500 h-2 rounded-full" 
+                    style={{ 
+                      width: `${Math.min(100, (item.time / (timeSpentData[0]?.time || 1)) * 100)}%` 
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <Music className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <p className="text-gray-400">No listening data available for this period</p>
+          <Button 
+            variant="ghost" 
+            className="mt-4 text-green-500 hover:text-green-400"
+            onClick={fetchTimeSpentData}
+          >
+            Retry
+          </Button>
+        </div>
+      )}
+    </CardContent>
+  </Card>
+)} */}
+
               {/* Empty State */}
               {!loading && topArtists.length === 0 && !error && (
                 <Card className="bg-black/40 backdrop-blur-sm border-white/10 text-center">
@@ -401,6 +544,7 @@ export default function TopArtists() {
                     </p>
                   </CardContent>
                 </Card>
+                
               )}
             </>
           )}

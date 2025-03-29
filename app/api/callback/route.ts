@@ -39,12 +39,16 @@ export async function GET(request: Request) {
       }
     );
 
-    const { access_token } = response.data;
-    // Return a redirect response instead of using redirect()
+    const { access_token, expires_in, refresh_token } = response.data;
+
+    // Calculate expiration timestamp (current time + expires_in seconds)
+    const expiresAt = Date.now() + expires_in * 1000; // Convert to milliseconds
+
+    // Include access_token, expires_at, and refresh_token in the redirect URL
     return new Response(null, {
       status: 302,
       headers: {
-        Location: `/?access_token=${access_token}`,
+        Location: `/?access_token=${access_token}&expires_at=${expiresAt}&refresh_token=${refresh_token}`,
       },
     });
   } catch (error) {

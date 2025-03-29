@@ -121,7 +121,7 @@ export default function Dashboard() {
           {/* Welcome Section */}
           <div className="mb-12 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to <span className="text-primary">SonicVerse</span>
+              Welcome to <span className="text-primary">Spectra</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
               Explore your music universe through immersive visualizations and personalized insights.

@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-// Types for Spotify artist data
 interface Artist {
   id: string;
   name: string;
   popularity: number;
   genres: string[];
+  images: { url: string }[];
 }
 
 interface TopArtistsResponse {
@@ -15,6 +15,7 @@ interface TopArtistsResponse {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const accessToken = searchParams.get('access_token');
+  const timeRange = searchParams.get('time_range') || 'medium_term';
 
   if (!accessToken) {
     return new Response('Missing access token', { status: 400 });
@@ -25,6 +26,10 @@ export async function GET(request: Request) {
       'https://api.spotify.com/v1/me/top/artists',
       {
         headers: { Authorization: `Bearer ${accessToken}` },
+        params: {
+          time_range: timeRange,
+          limit: 50
+        }
       }
     );
 

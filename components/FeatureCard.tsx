@@ -1,43 +1,47 @@
-import type React from "react"
-import Link from "next/link"
+"use client";
 
-interface FeatureCardProps {
-  title: string
-  description: string
-  icon: React.ReactNode
-  href: string
-  gradient: string
-  borderColor: string
-}
+import { HoverEffect } from "./ui/card-hover-effect";
+import { Music, Clock, User2, BarChart2 } from "lucide-react";
 
-export default function FeatureCard({ title, description, icon, href, gradient, borderColor }: FeatureCardProps) {
+export function FeatureCardsHoverEffect() {
   return (
-    <Link
-      href={href}
-      className={`block group relative overflow-hidden rounded-xl border ${borderColor} bg-black/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-white/5 hover:-translate-y-1`}
-    >
-      <div className={`absolute inset-0 opacity-20 ${gradient}`}></div>
-      <div className="relative p-6">
-        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-400 mb-4">{description}</p>
-        <div className="flex items-center text-sm font-medium text-white/70 group-hover:text-white transition-colors">
-          Explore
-          <svg
-            viewBox="0 0 24 24"
-            className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M5 12h14"></path>
-            <path d="M12 5l7 7-7 7"></path>
-          </svg>
-        </div>
-      </div>
-    </Link>
-  )
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <HoverEffect items={features} />
+    </div>
+  );
 }
 
+export const features = [
+  {
+    title: "Doppelgänger Finder",
+    description: "Discover your musical twin from celebs, characters, and legends who vibe like you.",
+    link: "/doppelganger",
+    icon: <User2 className="w-8 h-8 text-purple-400" />,
+    borderColor: "border-purple-500/50",
+    hoverBorderColor: "hover:border-purple-400/80"
+  },
+  {
+    title: "Time Travel",
+    description: "Generate playlists from past decades that match your unique music taste.",
+    link: "/time-travel",
+    icon: <Clock className="w-8 h-8 text-amber-400" />,
+    borderColor: "border-amber-500/50",
+    hoverBorderColor: "hover:border-amber-400/80"
+  },
+  {
+    title: "Top Artists",
+    description: "Explore your most-played artists and discover more from their catalogs.",
+    link: "/top-artists",
+    icon: <Music className="w-8 h-8 text-green-400" />,
+    borderColor: "border-green-500/50",
+    hoverBorderColor: "hover:border-green-400/80"
+  },
+  {
+    title: "Music Analysis",
+    description: "Deep dive into your music preferences with detailed analytics and insights.",
+    link: "/listening-timeline",
+    icon: <BarChart2 className="w-8 h-8 text-blue-400" />,
+    borderColor: "border-blue-500/50",
+    hoverBorderColor: "hover:border-blue-400/80"
+  },
+];
