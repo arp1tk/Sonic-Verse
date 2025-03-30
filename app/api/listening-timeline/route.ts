@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
 export async function GET(request: Request) {
-  // Get the access token from the Authorization header instead
   const authHeader = request.headers.get('Authorization');
   if (!authHeader) {
     return NextResponse.json({ error: 'Missing Authorization header' }, { status: 400 });
@@ -14,9 +13,13 @@ export async function GET(request: Request) {
 
   try {
     const response = await axios.get(`${SPOTIFY_API_BASE}/me/player/recently-played`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { 
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
       params: { limit: 50 },
     });
+
 
     const tracks = response.data.items.map((item: any) => ({
       playedAt: item.played_at,

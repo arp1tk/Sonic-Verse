@@ -55,31 +55,34 @@ export  function ListeningTimelineContent() {
     if (token) setAccessToken(token);
   }, [searchParams]);
 
-  const fetchTimeline = async () => {
-    if (!accessToken) {
-      setError("No access token available. Please log in.");
-      return;
-    }
 
-    setLoading(true);
-    setError("");
-    setTimeline([]);
+const fetchTimeline = async () => {
+  if (!accessToken) {
+    setError("No access token available. Please log in.");
+    return;
+  }
 
-    try {
-      const response = await axios.get("/api/listening-timeline", {
-        params: { access_token: accessToken },
-      });
-      setTimeline(response.data.timeline);
-    } catch (err: any) {
-      console.error("Timeline fetch error:", err);
-      setError(
-        err.response?.data?.error ||
-          "Failed to fetch your listening history. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError("");
+  setTimeline([]);
+
+  try {
+    const response = await axios.get("/api/listening-timeline", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    setTimeline(response.data.timeline);
+  } catch (err: any) {
+    console.error("Timeline fetch error:", err);
+    setError(
+      err.response?.data?.error ||
+        "Failed to fetch your listening history. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Enhanced chart data with all new metrics
   const chartData = {
