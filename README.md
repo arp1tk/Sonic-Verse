@@ -48,7 +48,7 @@ Explore your favorite artists with detailed stats such as genres, popularity, an
 
 ![Top Artists Screenshot](./screenshots/top-artist1.png)
 ![Top Artists Screenshot](./screenshots/top-artist2.png)
-![Top Artists Screenshot](./screenshots/top-artist3.png)
+![Top Artists Screenshot](./screenshots/top-artists3.png)
 
 ---
 
