@@ -21,7 +21,7 @@ Generates playlists for specific decades (e.g., 1980s, 2010s) tailored to your m
 - **Why it’s cool:** Discover how your modern preferences (e.g., rap, Bollywood) would sound in past eras.  
 - **Spotify Compliance:** Tracks include Spotify logo and links; saved playlists link to Spotify.  
 
-📸 **Screenshot Placeholder:** Add a screenshot of the time travel feature with a decade selector and playlist.  
+![Time Travel Screenshot](./screenshots/time-travel.png)
 
 ---
 
@@ -29,7 +29,7 @@ Generates playlists for specific decades (e.g., 1980s, 2010s) tailored to your m
 Shows your Spotify profile (display name, avatar) across the app.  
 - **Why it’s cool:** Adds a personal touch to your experience.  
 
-📸 **Screenshot Placeholder:** Add a screenshot showing the user’s avatar and name (example: app header).  
+![User Profile Screenshot](./screenshots/user-profile.png)  
 
 ---
 
@@ -38,7 +38,7 @@ Saves your top tracks or time-travel playlists to your Spotify account.
 - **Why it’s cool:** Take your discoveries with you, listen later, or share with friends.  
 - **Feedback:** Toast notifications confirm success or alert you to issues.  
 
-📸 **Screenshot Placeholder:** Add a screenshot of a toast notification or saved playlist confirmation.  
+![Playlist Save Screenshot](./screenshots/save.png)
 
 ---
 
@@ -46,7 +46,9 @@ Saves your top tracks or time-travel playlists to your Spotify account.
 Explore your favorite artists with detailed stats such as genres, popularity, and listening trends.  
 - **Why it’s cool:** Dive deeper into the artists shaping your music taste.  
 
-📸 **Screenshot Placeholder:** Add a screenshot of the top artists page showing artist stats or visualizations.  
+![Top Artists Screenshot](./screenshots/top-artist1.png)
+![Top Artists Screenshot](./screenshots/top-artist2.png)
+![Top Artists Screenshot](./screenshots/top-artist3.png)
 
 ---
 
@@ -54,7 +56,7 @@ Explore your favorite artists with detailed stats such as genres, popularity, an
 Matches your music taste with celebrities, fictional characters, or music legends based on genre or audio features.  
 - **Why it’s cool:** Adds a fun, social element to your music experience.  
 
-📸 **Screenshot Placeholder:** Add a screenshot of the doppelgänger feature showing a match result.  
+![Doppelgänger Screenshot](./screenshots/doppleganger.png)
 
 ---
 
@@ -62,7 +64,7 @@ Matches your music taste with celebrities, fictional characters, or music legend
 Analyzes your listening patterns, such as track danceability, energy, or mood using Spotify’s audio features.  
 - **Why it’s cool:** Offers data-driven insights into your music preferences.  
 
-📸 **Screenshot Placeholder:** Add a screenshot of the music analysis feature showing audio feature insights.  
+![Music Analysis Screenshot](./screenshots/analysis.png)
 
 ---
 
@@ -107,34 +109,3 @@ SonicVerse integrates with the **Spotify Web API** to power its features:
 
 ---
 
-## 🚀 Getting Started  
-
-### Visit the App  
-👉 [Deployed URL](https://sonicverse.vercel.app) *(replace this with your URL)*  
-
-### User Instructions  
-1. Visit the app.  
-2. Agree to **Terms of Use** and **Privacy Policy**.  
-3. Authenticate with **Spotify**.  
-4. Explore your music universe! 🎵
-
-### For Developers  
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/sonicverse.git
-
-# Navigate into the project directory
-cd sonicverse
-
-# Install dependencies
-npm install
-
-# Configure environment variables
-# Create a .env.local file with the following:
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-NEXT_PUBLIC_REDIRECT_URI=http://localhost:3000/api/auth/callback
-
-# Start the development server
-npm run dev
