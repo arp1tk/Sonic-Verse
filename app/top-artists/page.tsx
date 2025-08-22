@@ -324,88 +324,107 @@ export default function TopArtists() {
               {/* Grid View */}
               
               {activeTab === "grid" && (
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 gap-y-3 md:gap-y-4 "> {/* Reduced gap */}
-    {topArtists.map((artist, index) => (
-      <CardContainer key={artist.id} className="inter-var">
-      <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-full rounded-xl p-3 border hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300 mb-0">     <Link 
-            href={`https://open.spotify.com/artist/${artist.id}`} 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full"
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 gap-y-3 md:gap-y-4">
+  {topArtists.map((artist, index) => (
+    <CardContainer key={artist.id} className="inter-var">
+      <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-full rounded-xl p-3 border hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300 mb-0">
+        <Link
+          href={`https://open.spotify.com/artist/${artist.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full"
+        >
+          <CardItem
+            translateZ="20"
+            className="relative w-full aspect-square rounded-lg overflow-hidden bg-black/50"
           >
-            <CardItem
-              translateZ="20"
-              className="relative w-full aspect-square rounded-lg overflow-hidden bg-black/50"
-            >
-              {/* Top rank badge */}
-              {index < 3 && (
-                <CardItem
-                  translateZ="60"
-                  className="absolute top-2 right-2 z-10"
-                >
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-full ${
-                    index === 0 ? "bg-amber-500" : 
-                    index === 1 ? "bg-gray-300" : "bg-amber-700"
-                  }`}>
-                    <Award className="h-4 w-4 text-black" />
-                  </div>
-                </CardItem>
-              )}
-
-              {/* Artist image with enhanced 3D hover */}
-              <CardItem 
-                translateZ="70"
-                className="w-full h-full transform transition-all duration-500 group-hover/card:translate-z-20"
-              >
-                {artist.images?.[0]?.url ? (
-                  <img
-                    src={artist.images[0].url}
-                    alt={artist.name}
-                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-green-900/30">
-                    <Mic2 className="h-12 w-12 text-green-400" />
-                  </div>
-                )}
-              </CardItem>
-
-              {/* Hover overlay with more depth */}
+            {/* Top rank badge */}
+            {index < 3 && (
               <CardItem
-                translateZ="100"
-                className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-end p-3"
+                translateZ="60"
+                className="absolute top-2 right-2 z-10"
               >
-                <div className="w-full transform group-hover/card:translate-z-30">
-                  <div className="flex items-center mb-1">
-                    <span className="text-xs text-white/70 mr-1">Popularity:</span>
-                    <div className="flex-1 bg-white/20 h-1.5 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-green-500 rounded-full" 
-                        style={{ width: `${artist.popularity}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                <div
+                  className={`flex items-center justify-center w-7 h-7 rounded-full ${
+                    index === 0
+                      ? "bg-amber-500"
+                      : index === 1
+                      ? "bg-gray-300"
+                      : "bg-amber-700"
+                  }`}
+                >
+                  <Award className="h-4 w-4 text-black" />
                 </div>
               </CardItem>
+            )}
+
+            {/* Artist image */}
+            <CardItem
+              translateZ="70"
+              className="w-full h-full transform transition-all duration-500 group-hover/card:translate-z-20"
+            >
+              {artist.images?.[0]?.url ? (
+                <img
+                  src={artist.images[0].url}
+                  alt={artist.name}
+                  className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-green-900/30">
+                  <Mic2 className="h-12 w-12 text-green-400" />
+                </div>
+              )}
             </CardItem>
 
-            {/* Artist info with subtle 3D effect */}
+            {/* Hover overlay */}
             <CardItem
-              translateZ="30"
-              className="mt-2 text-center transform group-hover/card:translate-z-10"
+              translateZ="100"
+              className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-end p-3"
             >
-              <h3 className="font-bold flex items-center text-md mb-0.5 line-clamp-1 dark:text-white group-hover/card:text-green-400 transition-colors">
+              <div className="w-full transform group-hover/card:translate-z-30">
+                <div className="flex items-center mb-1">
+                  <span className="text-xs text-white/70 mr-1">
+                    Popularity:
+                  </span>
+                  <div className="flex-1 bg-white/20 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-green-500 rounded-full"
+                      style={{ width: `${artist.popularity}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </CardItem>
+          </CardItem>
+
+          {/* Artist info + Spotify logo */}
+          <CardItem
+            translateZ="30"
+            className="mt-2 text-center transform group-hover/card:translate-z-10"
+          >
+            <div className="flex flex-col items-center">
+              <div className="flex justify-between items-start w-full">
+                <div> <h3 className="font-bold flex items-center text-md mb-0.5 line-clamp-1 dark:text-white group-hover/card:text-green-400 transition-colors">
                 {artist.name}
               </h3>
               <p className="text-xs text-neutral-500 flex items-center dark:text-neutral-300 line-clamp-1">
                 {artist.genres?.slice(0, 2).join(", ") || "No genres"}
               </p>
-            </CardItem>
-          </Link>
-        </CardBody>
-      </CardContainer>
-    ))}
-  </div>
+              </div>
+             
+              <img
+                src="/spotify.png"
+                alt="Spotify"
+                className="h-5 mt-2"
+              /></div>
+            </div>
+          </CardItem>
+        </Link>
+      </CardBody>
+    </CardContainer>
+  ))}
+</div>
+
 )}
 
               {/* Popularity Chart */}

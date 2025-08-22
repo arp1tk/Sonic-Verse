@@ -51,6 +51,11 @@ export const HoverEffect = ({
           <Card>
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.description}</CardDescription>
+             <img
+            src="/spotify.png" // <-- set your correct path here
+            alt="Spotify"
+            className="h-6 w-10"
+          />
           </Card>
         </Link>
       ))}

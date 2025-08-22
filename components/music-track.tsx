@@ -1,4 +1,3 @@
-// components/music-track.tsx
 import { format } from "date-fns"
 import Link from "next/link"
 
@@ -36,6 +35,7 @@ export default function MusicTrack({
         variant === "compact" ? "" : "mb-3"
       }`}
     >
+      {/* Song Image */}
       <div className="w-10 h-10 bg-gray-800 rounded-md flex items-center justify-center mr-3 flex-shrink-0 overflow-hidden">
         {image ? (
           <img src={image} alt={`${name} by ${artist}`} className="w-full h-full object-cover" />
@@ -53,6 +53,8 @@ export default function MusicTrack({
           </svg>
         )}
       </div>
+
+      {/* Song Details */}
       <div className="min-w-0 flex-1">
         <h3 className="font-medium truncate">{name}</h3>
         <p className="text-sm text-gray-400 truncate">
@@ -61,18 +63,37 @@ export default function MusicTrack({
           {played_at && ` • ${formatPlayedAt(played_at)}`}
         </p>
       </div>
-      <Link
-        href={`https://open.spotify.com/track/${id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="ml-3 text-gray-400 hover:text-white"
-      >
-        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-          <path d="M15 3h6v6"></path>
-          <path d="M10 14L21 3"></path>
-        </svg>
-      </Link>
+
+      {/* Buttons Section */}
+      <div className="flex items-center gap-3 ml-3">
+        {/* Redirect Button */}
+        <Link
+          href={`https://open.spotify.com/track/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white transition"
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14L21 3"></path>
+          </svg>
+        </Link>
+
+        {/* Spotify Logo */}
+        <Link
+          href={`https://open.spotify.com/track/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-1 rounded-full bg-black hover:bg-[#1DB954] transition"
+        >
+          <img
+            src="/spotify.png" // <-- set your correct path here
+            alt="Spotify"
+            className="h-6 w-10"
+          />
+        </Link>
+      </div>
     </div>
   )
 }
