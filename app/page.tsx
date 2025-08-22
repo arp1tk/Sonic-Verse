@@ -151,32 +151,47 @@ export default function Home() {
           </div>
 
           {/* Login Button */}
-          <button
-            onClick={login}
-            className="w-full bg-green-500 hover:bg-green-400 text-black font-medium py-4 px-6 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center justify-center group"
-          >
-            <svg viewBox="0 0 24 24" className="w-5 h-5 mr-2" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.65 14.65c-.2.2-.51.2-.71 0-1.79-1.78-4.64-2.16-7.44-1.18-.21.07-.43-.09-.5-.29-.07-.21.09-.43.29-.5 3.16-1.09 6.39-.66 8.43 1.35.2.19.2.51.01.71l-.08-.09zm1.23-2.75c-.25.25-.65.25-.9 0-2.17-2.17-5.46-2.8-8.02-1.53-.26.12-.58.01-.7-.24-.12-.26-.01-.58.24-.7 2.93-1.39 6.63-.67 9.13 1.82.25.25.25.65 0 .9l.25-.25zm.11-2.77c-.26.26-.68.26-.94 0-2.54-2.54-6.35-3.12-9.48-1.71-.3.13-.64-.01-.77-.3-.13-.3.01-.64.3-.77 3.49-1.58 7.76-.9 10.65 1.96.26.26.26.68 0 .94l.24-.12z" />
-            </svg>
-            Connect with Spotify
-            <svg
-              viewBox="0 0 24 24"
-              className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M5 12h14"></path>
-              <path d="M12 5l7 7-7 7"></path>
-            </svg>
-          </button>
+       <div className="flex flex-col items-center space-y-4">
+  {/* Privacy Policy Note */}
+  <p className="text-sm text-gray-400 text-center">
+    By logging in, you agree to our{" "}
+    <a
+      href="/privacy"
+      className="text-green-400 hover:underline transition-colors duration-200"
+    >
+      Privacy Policy
+    </a>
+    .
+  </p>
+
+  {/* Spotify Login Button */}
+  <button
+    onClick={login}
+    className="w-full bg-green-200 hover:bg-green-300 text-black font-medium py-4 px-6 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center justify-center group"
+  >
+    <img
+            src="/spotify.png" // <-- set your correct path here
+            alt="Spotify"
+            className="h-9 w-15"
+          />
+    Connect with Spotify
+    <svg
+      viewBox="0 0 24 24"
+      className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M5 12h14"></path>
+      <path d="M12 5l7 7-7 7"></path>
+    </svg>
+  </button>
+</div>
+
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-6 px-6 text-center text-gray-500 text-sm">
-        <p>Not affiliated with Spotify. Made for music lovers.</p>
-      </footer>
+    
     </div>
   );
 }

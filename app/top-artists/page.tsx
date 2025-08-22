@@ -402,22 +402,25 @@ export default function TopArtists() {
             translateZ="30"
             className="mt-2 text-center transform group-hover/card:translate-z-10"
           >
-            <div className="flex flex-col items-center">
-              <div className="flex justify-between items-start w-full">
-                <div> <h3 className="font-bold flex items-center text-md mb-0.5 line-clamp-1 dark:text-white group-hover/card:text-green-400 transition-colors">
-                {artist.name}
-              </h3>
-              <p className="text-xs text-neutral-500 flex items-center dark:text-neutral-300 line-clamp-1">
-                {artist.genres?.slice(0, 2).join(", ") || "No genres"}
-              </p>
-              </div>
-             
-              <img
-                src="/spotify.png"
-                alt="Spotify"
-                className="h-5 mt-2"
-              /></div>
-            </div>
+         <div className="flex flex-col items-center">
+  <div className="flex justify-between items-start w-full">
+ 
+    <div>
+      <h3 className="font-bold flex items-center text-md mb-0.5 line-clamp-1 dark:text-white group-hover/card:text-green-400 transition-colors">
+        {artist.name}
+      </h3>
+      <p className="text-xs text-neutral-500 flex items-center dark:text-neutral-300 line-clamp-1">
+        {artist.genres?.slice(0, 2).join(", ") || "No genres"}
+      </p>
+    </div>
+    <img
+      src="/spotify.png"
+      alt="Spotify"
+      className="h-9 w-15 mt-1 ml-3"
+    />
+  </div>
+</div>
+
           </CardItem>
         </Link>
       </CardBody>
